@@ -1,5 +1,3 @@
-// pages/index.tsx
-
 import Head from "next/head";
 
 const faqs = [
@@ -41,17 +39,27 @@ export default function Home() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       </Head>
-      <main className="max-w-2xl mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-6">ChatGPT 提问技巧 FAQ</h1>
-        <div className="space-y-4">
-          {faqs.map((faq, idx) => (
-            <div key={idx} className="border-b pb-4">
-              <h2 className="text-xl font-semibold">{faq.question}</h2>
-              <p className="text-gray-700 mt-2">{faq.answer}</p>
-            </div>
-          ))}
-        </div>
-      </main>
+      <div className="min-h-screen bg-gray-50">
+        <header className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">ChatGPT 提问技巧 FAQ</h1>
+            <p className="mt-4 text-lg opacity-90">了解如何优化内容以被 AI 引用</p>
+          </div>
+        </header>
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="space-y-6">
+            {faqs.map((faq, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-lg shadow-md p-6 transition-transform transform hover:-translate-y-1 hover:shadow-lg"
+              >
+                <h2 className="text-2xl font-semibold text-gray-900">{faq.question}</h2>
+                <p className="mt-3 text-gray-600 leading-relaxed">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </main>
+      </div>
     </>
   );
 }
