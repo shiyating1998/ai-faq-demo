@@ -3,6 +3,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { generateFAQ } from "../api/generate-faq";
+import FormattedAnswer from "../../components/FormattedAnswer";
 
 interface FAQ {
   question: string;
@@ -134,15 +135,17 @@ export default function FAQPage({ topic, faqs }: FAQPageProps) {
                     
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-relaxed">
+                      <h2 className="text-2xl font-bold text-gray-900 mb-6 leading-relaxed">
                         <span className="mr-3">❓</span>
                         {faq.question}
                       </h2>
                       <div className="prose max-w-none">
-                        <p className="text-lg text-gray-700 leading-relaxed">
-                          <span className="mr-3 text-blue-600">💡</span>
-                          {faq.answer}
-                        </p>
+                        <div className="flex items-start mb-4">
+                          <span className="mr-3 text-blue-600 text-xl mt-1">💡</span>
+                          <div className="flex-1">
+                            <FormattedAnswer answer={faq.answer} />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

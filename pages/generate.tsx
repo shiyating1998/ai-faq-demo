@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import FormattedAnswer from "../components/FormattedAnswer";
 
 export default function GeneratePage() {
   const [topic, setTopic] = useState("");
@@ -178,9 +179,9 @@ export default function GeneratePage() {
                         <h3 className="text-xl font-bold text-gray-900 mb-4 leading-relaxed">
                           {faq.question}
                         </h3>
-                        <p className="text-gray-700 leading-relaxed text-lg">
-                          {faq.answer}
-                        </p>
+                        <div className="text-lg">
+                          <FormattedAnswer answer={faq.answer} />
+                        </div>
                       </div>
                     </div>
                   </div>
