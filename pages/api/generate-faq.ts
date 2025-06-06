@@ -17,9 +17,23 @@ const getFallbackFAQs = (topic: string) => [
   }
 ];
 
+function extractJson(text: string): string {
+  return text
+    .replace(/^```json\s*/i, '')  // 去掉开头的 ```json
+    .replace(/^```/, '')          // 万一开头是 ``` 也兼容
+    .replace(/```$/, '')          // 去掉结尾的 ```
+    .trim();                      // 去除首尾空格
+}
+
+
 const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
-console.log("key:",process.env.OPENAI_API_KEY);
-console.log("openai available:", !!openai);
+
+const openai_ds = new OpenAI({
+  baseURL: 'https://api.deepseek.com',
+  apiKey: process.env.OPENAI_DS_API_KEY,
+});
+console.log("key:",process.env.OPENAI_DS_API_KEY);
+console.log("openai_ds available:", !!openai_ds);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { topic } = req.body;
@@ -35,20 +49,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const completion = await openai.chat.completions.create({
-      //model: "gpt-3.5-turbo",
-      model: "gpt-3.5-turbo-0125",
+
+    
+    // const completion = await openai.chat.completions.create({
+    //   //model: "gpt-3.5-turbo",
+    //   model: "gpt-3.5-turbo-0125",
+    //   messages: [
+    //     { role: "system", content: "你是一个专业的内容编辑助手，生成 FAQ 问答。" },
+    //     { role: "user", content: `请为"${topic}"生成 3 条简洁的 FAQ，回答用简体中文，返回 JSON 格式，包含 question 和 answer 字段。` },
+    //   ],
+    //   max_tokens: 500,
+    // }, {
+    //   timeout: 30000, // 10 second timeout
+    // });
+
+    const completion_ds = await openai_ds.chat.completions.create({
       messages: [
-        { role: "system", content: "你是一个专业的内容编辑助手，生成 FAQ 问答。" },
-        { role: "user", content: `请为"${topic}"生成 3 条简洁的 FAQ，回答用简体中文，返回 JSON 格式，包含 question 和 answer 字段。` },
+        {
+          role: "system",
+          content: "你是一个专业的内容编辑助手，专门为网站生成 FAQ 问答。"
+        },
+        {
+          role: "user",
+          content: `请为"${topic}"生成 3 条简洁明了的 FAQ，要求如下：
+    
+    1. 回答使用简体中文；
+    2. 返回格式为 **纯 JSON 数组**，每个元素包含 "question" 和 "answer" 两个字段；
+    3. **不要包裹 \`\`\`json 或任何 Markdown 格式**，也不要添加额外说明文字。
+    
+    示例返回格式：
+    [
+      { "question": "问题1？", "answer": "回答1。" },
+      { "question": "问题2？", "answer": "回答2。" },
+      { "question": "问题3？", "answer": "回答3。" }
+    ]`
+        }
       ],
-      max_tokens: 500,
-    }, {
-      timeout: 30000, // 10 second timeout
+      model: "deepseek-chat",
     });
-    console.log("completion:", completion);
-    const result = completion.choices[0].message.content;
-    const faqs = JSON.parse(result || "[]");
+    
+
+    const rawContent = completion_ds.choices[0].message.content || "";
+    const cleanedContent = extractJson(rawContent);
+    const faqs = JSON.parse(cleanedContent);
+
+    console.log("completion:", completion_ds);
+    // const result = completion_ds.choices[0].message.content;
+    // const faqs = JSON.parse(result || "[]");
 
     res.status(200).json({ faqs });
 } catch (error: any) {
