@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://ai-faq-demo.vercel.app
+
+# Sitemaps
+Sitemap: https://ai-faq-demo.vercel.app/sitemap.xml
