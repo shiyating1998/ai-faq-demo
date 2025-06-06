@@ -3,18 +3,18 @@ import Link from "next/link";
 
 const faqs = [
   {
-    question: "AI 如何引用网页？",
-    answer: "结构清晰 + 权重高 + 使用 schema。",
+    question: "什么是SEO优化的FAQ内容？FAQ内容如何提升搜索排名？",
+    answer: "SEO优化的FAQ内容是针对搜索引擎和AI模型优化的问答格式，通过结构化数据、关键词优化和用户意图匹配，提升在搜索结果中的排名和被AI引用的概率。优质的FAQ内容能够获得Featured Snippet展示，显著提升网站流量。",
+    icon: "🎯"
+  },
+  {
+    question: "AI模型如何理解和引用网页内容？生成式AI的内容索引机制",
+    answer: "AI模型通过分析网页的结构化数据、语义信息和内容质量来理解网页内容。使用JSON-LD结构化标记、清晰的内容层次和权威性信号，可以提升被ChatGPT、Claude等AI模型引用的概率。高质量的FAQ格式特别受到AI模型青睐。",
     icon: "🤖"
   },
   {
-    question: "什么是 JSON-LD FAQ schema?",
-    answer: "帮助 AI 更好理解问答内容。",
-    icon: "📋"
-  },
-  {
-    question: "如何提升被收录概率？",
-    answer: "使用 descriptive 语言，创建清晰结构。",
+    question: "如何创建对搜索引擎友好的FAQ内容？SEO FAQ最佳实践",
+    answer: "创建SEO友好的FAQ需要：1）使用长尾关键词构建问题标题；2）提供详细且有价值的答案（80-150字）；3）采用JSON-LD结构化标记；4）匹配用户真实搜索意图；5）保持内容的专业性和权威性。这些做法能显著提升搜索可见性。",
     icon: "📈"
   },
 ];
@@ -36,8 +36,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>AI FAQ Generator - 让内容更容易被AI引用</title>
-        <meta name="description" content="专业的FAQ生成工具，优化内容结构，提升AI引用率" />
+        <title>SEO FAQ生成器 - 提升搜索排名和AI引用的专业工具</title>
+        <meta name="description" content="专业的SEO FAQ内容生成工具，优化搜索引擎排名，提升ChatGPT等AI模型引用概率，获得Featured Snippet展示，增加网站流量" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -78,13 +78,13 @@ export default function Home() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
             <div className="text-center">
               <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">
-                让你的内容
+                SEO优化FAQ生成器
                 <span className="block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                  被AI智能引用
+                  提升搜索排名和AI引用
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-                专业的FAQ生成工具，优化内容结构，提升搜索引擎和AI模型的收录率
+                专业的SEO FAQ内容生成工具，优化搜索引擎排名，提升ChatGPT等AI模型引用概率，获得更多精准流量
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link 
@@ -115,10 +115,10 @@ export default function Home() {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              常见问题解答
+              SEO与AI引用优化指南
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              了解如何优化内容以提升AI引用效果
+              掌握搜索引擎优化技巧，提升内容在Google搜索和AI模型中的表现
             </p>
           </div>
           
@@ -147,10 +147,10 @@ export default function Home() {
         <section className="bg-gradient-to-r from-gray-900 to-gray-800 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              准备开始了吗？
+              提升你的SEO排名
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              立即生成专业的FAQ内容，提升你的内容影响力
+              立即生成SEO优化的FAQ内容，获得Featured Snippet展示，提升搜索流量和AI引用率
             </p>
             <Link 
               href="/generate" 
