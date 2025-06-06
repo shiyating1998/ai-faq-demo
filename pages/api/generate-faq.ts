@@ -109,3 +109,58 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   
 }
+
+export async function generateFAQ(topic: string) {
+
+  console.log("received topic:", topic);
+
+
+  try {
+
+
+    const completion_ds = await openai_ds.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: "你是一个专业的内容编辑助手，专门为网站生成 FAQ 问答。"
+        },
+        {
+          role: "user",
+          content: `请为"${topic}"生成 3 条简洁明了的 FAQ，要求如下：
+    
+    1. 回答使用简体中文；
+    2. 返回格式为 **纯 JSON 数组**，每个元素包含 "question" 和 "answer" 两个字段；
+    3. **不要包裹 \`\`\`json 或任何 Markdown 格式**，也不要添加额外说明文字。
+    
+    示例返回格式：
+    [
+      { "question": "问题1？", "answer": "回答1。" },
+      { "question": "问题2？", "answer": "回答2。" },
+      { "question": "问题3？", "answer": "回答3。" }
+    ]`
+        }
+      ],
+      model: "deepseek-chat",
+    });
+    
+
+    const rawContent = completion_ds.choices[0].message.content || "";
+    const cleanedContent = extractJson(rawContent);
+    const faqs = JSON.parse(cleanedContent);
+
+    console.log("completion:", completion_ds);
+    // const result = completion_ds.choices[0].message.content;
+    // const faqs = JSON.parse(result || "[]");
+    return faqs;
+
+} catch (error: any) {
+    console.error("生成 FAQ 失败：", {
+      message: error.message,
+      name: error.name,
+      stack: error.stack,
+      response: error.response?.data,
+    });
+    return getFallbackFAQs(topic);
+  }
+
+}

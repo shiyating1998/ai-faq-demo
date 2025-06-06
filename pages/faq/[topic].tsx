@@ -1,6 +1,7 @@
 // pages/faq/[topic].tsx
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
+import { generateFAQ } from "../api/generate-faq";
 
 interface FAQ {
   question: string;
@@ -29,7 +30,7 @@ export default function FAQPage({ topic, faqs }: FAQPageProps) {
   return (
     <>
       <Head>
-        <title>{topic} - FAQ</title>
+      <title>{topic} 的常见问题解答 | AI FAQ Demo</title>
         <meta name="description" content={`关于 ${topic} 的常见问题`} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       </Head>
@@ -58,18 +59,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const topic = ctx.params!.topic as string;
-  // 用 API 或本地方法生成 FAQ
-  const res = await fetch("http://localhost:3000/api/generate-faq", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ topic }),
-  });
-
-  const data = await res.json();
+  
+  // 直接调用 generateFAQ 函数，避免 HTTP 请求
+  const faqs = await generateFAQ(topic);
+  
   return {
     props: {
       topic,
-      faqs: data.faqs,
+      faqs,
     },
   };
 };
